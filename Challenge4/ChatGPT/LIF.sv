@@ -8,16 +8,21 @@ module LIF_Neuron #(
     input  logic                clk,
     input  logic                rst,
     input  logic signed [WIDTH-1:0] I_in,  // Input current
-    output logic                spike     // Output spike signal
+    output logic                spike,     // Output spike signal
+    output logic signed [WIDTH-1:0] V_m    // Membrane potential output
 );
 
-    logic signed [WIDTH-1:0] V_m;          // Membrane potential
-    logic [REFRACTORY_WIDTH-1:0] refrac_count; // Refractory period counter
-    logic refractory_state;                // Refractory state flag
+    // Local parameter for safe leak shift calculation
+    wire [31:0] safe_leak_shift;
+    assign safe_leak_shift = (LEAK_SHIFT < 1) ? 1 : (LEAK_SHIFT >= WIDTH ? WIDTH-1 : LEAK_SHIFT);
+
+    logic signed [WIDTH-1:0] V_m_internal;         // Membrane potential
+    logic [REFRACTORY_WIDTH-1:0] refrac_count;      // Refractory period counter
+    logic refractory_state;                         // Refractory state flag
 
     always_ff @(posedge clk or posedge rst) begin
         if (rst) begin
-            V_m <= 0;
+            V_m_internal <= 0;
             spike <= 0;
             refrac_count <= 0;
             refractory_state <= 0;
@@ -33,24 +38,26 @@ module LIF_Neuron #(
             end else begin
                 // Normal operation: update membrane potential with overflow protection
                 logic signed [WIDTH:0] V_m_next;
-                int safe_leak_shift = (LEAK_SHIFT < 1) ? 1 : (LEAK_SHIFT >= WIDTH ? WIDTH-1 : LEAK_SHIFT);
-                V_m_next = V_m + I_in - (V_m >>> safe_leak_shift);
+                V_m_next = V_m_internal + I_in - (V_m_internal >>> safe_leak_shift);
                 
                 // Overflow and underflow protection
-                if (V_m > 0 && I_in > 0 && V_m_next < 0) begin
-                    V_m <= {1'b0, {WIDTH-1{1'b1}}}; // Clamp to max positive value
-                end else if (V_m < 0 && I_in < 0 && V_m_next > 0) begin
-                    V_m <= {1'b1, {WIDTH-1{1'b0}}}; // Clamp to min negative value
+                if (V_m_internal > 0 && I_in > 0 && V_m_next < 0) begin
+                    V_m_internal <= {1'b0, {WIDTH-1{1'b1}}}; // Clamp to max positive value
+                end else if (V_m_internal < 0 && I_in < 0 && V_m_next > 0) begin
+                    V_m_internal <= {1'b1, {WIDTH-1{1'b0}}}; // Clamp to min negative value
                 end else if (V_m_next >= V_THRESH) begin
                     spike <= 1;            // Fire a spike
-                    V_m <= 0;              // Reset potential
+                    V_m_internal <= 0;     // Reset potential
                     refrac_count <= REFRACTORY; // Set refractory counter
                     refractory_state <= 1; // Enter refractory state
                 end else begin
-                    V_m <= V_m_next[WIDTH-1:0];
+                    V_m_internal <= V_m_next[WIDTH-1:0];
                 end
             end
         end
     end
-endmodule
 
+    // Assign internal membrane potential to output
+    assign V_m = V_m_internal;
+
+endmodule
