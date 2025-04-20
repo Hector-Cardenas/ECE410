@@ -1,0 +1,28 @@
+CuPy found. GPU execution option available.
+--- Starting Q-Learning GPU Test (5x5 Grid) ---
+Agent using: CuPy (GPU)
+  Q-Table initialized with shape: (5, 5, 4), dtype: float32, using <class 'cupy.ndarray'>
+
+--- Starting Training ---
+  Training started (GPU)...
+  Training finished (GPU).
+Training Duration (GPU (CuPy)): 48.8554 seconds
+
+--- Plotting Results ---
+
+--- Displaying Max Q-Values per State ---
+
+Max Q-Value for each State (5x5 Grid - GPU (CuPy) Run):
+-----------------------------------------------
+|  -4.74 |  -4.15 |  -3.50 |  -2.78 |  -1.98 | 
+-----------------------------------------------
+|  R:-5  |  -3.50 |  -2.78 |  R:-5  |  -1.09 | 
+-----------------------------------------------
+|  -3.50 |  -2.78 |  -1.98 |  -1.09 |  -0.10 | 
+-----------------------------------------------
+|  -3.28 |  R:-5  |  -1.09 |  -0.10 |   1.00 | 
+-----------------------------------------------
+|  -3.02 |  -2.65 |  R:-5  |   1.00 |  R:+1  | 
+-----------------------------------------------
+
+--- Script Finished ---
