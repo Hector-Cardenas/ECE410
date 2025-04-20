@@ -1,8 +1,8 @@
 # Week 3 Challenges #
 
-For Week 3, we were tasked with looking at a given Q-learning algorithm and consider possible hardware accelerations. As with Week 2 challenges, my intention is to learn to prompt Gemini better and get a feel for where "vibe coding" may be useful. As we'll see later, "vibe coding" seems to work better for me with pure software implemenations, and less so when trying to create HDL modules.
+For Week 3, we were tasked with looking at a given Q-learning algorithm and considering possible hardware accelerations. As with Week 2 challenges, my intention is to learn to prompt Gemini better and get a feel for where "vibe coding" may be useful. As we'll see later, "vibe coding" seems to work better for me with pure software implementations, and less so when trying to create HDL modules.
 
-Even before we started, I learned how to prompt Gemini a little more directly by splitting multi-part tasks into discrete instructions. Asking it to analyze the code from a GitHub link led to analyzing a hallucination, while asking it to copy the code first allowed me to verify the fetched code before beginning the analysis. Full conversation can be found [here](link).
+Even before we started, I learned how to prompt Gemini a little more directly by splitting multi-part tasks into discrete instructions. Asking it to analyze the code from a GitHub link led to analyzing a hallucination, while asking it to copy the code first allowed me to verify the fetched code before beginning the analysis. Full conversation can be found [here](https://g.co/gemini/share/aa0070e34a40).
 
 ## Challenge 10 ##
 For this challenge, we asked Gemini a few questions regarding the code and the results follow: 
@@ -39,4 +39,4 @@ The final code can be found within the Challenge_11 directory under Q_Compare.py
 ![CPU vs. GPU comparison of Q learning](./Challege_11/Q_Compare_Graph.png)
 
 ## Conclusion ##
-Overall, I thought Gemini handled these tasks quite well. Again, we ran into issues with the testbench that it provided, but that's a fairly nuanced problem that I would feel more comfortable being handled by a human anyways; still seems fairly sketchy to have an AI testbench verify an AI designed module. It did well on the knowledge and reasoning portions, however, and still seems to be quite well suited to creating these python scripts much faster than I would've been able to on my own. I still believe that I'm providing it the guidance required to create more meaningful comparisons, but the actual implementation was better than I would've been able to write within the same time frame. 
+Overall, I thought Gemini handled these tasks quite well. Again, we ran into issues with the testbench that it provided, but that's a fairly nuanced problem that I would feel more comfortable being handled by a human anyways; still seems fairly sketchy to have an AI testbench verify an AI designed module. It did well on the knowledge and reasoning portions, however, and still seems to be quite well suited to creating these python scripts much faster than I would've been able to on my own. I still believe that I'm providing the guidance required to create more meaningful comparisons, but the actual implementation was better than I would've been able to write within the same time frame. 
