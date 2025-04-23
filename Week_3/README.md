@@ -34,9 +34,9 @@ From there, however, I prompted Gemini to parallelize the workload for compariso
 - Pre-tests for the board state to ensure that a WIN condition is possible
 - Tuning the learning rate and reward values in order to ensure a WIN condition is met
 
-The final code can be found within the Challenge_11 directory under Q_Compare.py, while the final results can be seen here:
+The final code can be found within the Challenge_11 directory under Q_Compare.py, while the final results can be seen here (unfortunately, both agents failed at 50x50):
 
-![CPU vs. GPU comparison of Q learning](./Challege_11/Q_Compare_Graph.png)
+![CPU vs. GPU comparison of Q learning](./Challege_11/Q_Compare.png)
 
 ## Conclusion ##
 Overall, I thought Gemini handled these tasks quite well. Again, we ran into issues with the testbench that it provided, but that's a fairly nuanced problem that I would feel more comfortable being handled by a human anyways; still seems fairly sketchy to have an AI testbench verify an AI designed module. It did well on the knowledge and reasoning portions, however, and still seems to be quite well suited to creating these python scripts much faster than I would've been able to on my own. I still believe that I'm providing the guidance required to create more meaningful comparisons, but the actual implementation was better than I would've been able to write within the same time frame. 
