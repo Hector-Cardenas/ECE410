@@ -1,0 +1,40 @@
+--- Starting Q-Learning Script (GitHub Version Logic) ---
+
+--- Initializing Agent ---
+Initialization Duration: 0.0000 seconds
+
+--- Starting Training ---
+Training started...
+  Episode: 1000
+  Episode: 2000
+  Episode: 3000
+  Episode: 4000
+  Episode: 5000
+  Episode: 6000
+  Episode: 7000
+  Episode: 8000
+  Episode: 9000
+Training finished after 10000 episodes.
+Training Duration: 1.9558 seconds
+
+--- Plotting Results ---
+Plotting Duration: 0.1373 seconds
+
+--- Displaying Max Q-Values per State ---
+
+Max Q-Value for each State (V(s) approximation):
+-----------------------------------------------
+|  -4.74 |  -4.15 |  -3.50 |  -2.78 |  -1.98 | 
+-----------------------------------------------
+|  R:-5  |  -3.50 |  -2.78 |  R:-5  |  -1.09 | 
+-----------------------------------------------
+|  -3.50 |  -2.78 |  -1.98 |  -1.09 |  -0.10 | 
+-----------------------------------------------
+|  -3.70 |  R:-5  |  -1.09 |  -0.10 |   1.00 | 
+-----------------------------------------------
+|  -3.52 |  -3.75 |  R:-5  |   1.00 |  R:+1  | 
+-----------------------------------------------
+Display Duration: 0.0000 seconds
+
+--- Script Finished ---
+Total Execution Duration: 2.0930 seconds
