@@ -50,16 +50,16 @@ module SystolicNode #(
     input   logic                           Reset,            // Global reset signal
     input   logic                           Clear,            // Clear signal for the internal accumulator
     input   logic                           Act_Valid_In,     // Valid signal for Activation input
-    input   logic signed [INPUTS_N-1:0]      Act_In,           // Activation input from top/previous PE
+    input   logic signed [INPUTS_N-1:0]     Act_In,           // Activation input from top/previous PE
     input   logic                           Weight_Valid_In,  // Valid signal for Weight input
-    input   logic signed [INPUTS_N-1:0]      Weight_In,        // Weight input from left/previous PE
+    input   logic signed [INPUTS_N-1:0]     Weight_In,        // Weight input from left/previous PE
 
     // Outputs
     output  logic                           Act_Valid_Out,    // Registered Valid signal for Activation output
-    output  logic signed [INPUTS_N-1:0]      Act_Out,          // Registered Activation output to bottom/next PE
+    output  logic signed [INPUTS_N-1:0]     Act_Out,          // Registered Activation output to bottom/next PE
     output  logic                           Weight_Valid_Out, // Registered Valid signal for Weight output
-    output  logic signed [INPUTS_N-1:0]      Weight_Out,       // Registered Weight output to right/next PE
-    output  logic signed [ACCUM_OUT_N-1:0]   Accum_Out         // Output from the internal accumulator
+    output  logic signed [INPUTS_N-1:0]     Weight_Out,       // Registered Weight output to right/next PE
+    output  logic signed [ACCUM_OUT_N-1:0]  Accum_Out         // Output from the internal accumulator
 );
 
     // Define product width locally for clarity
