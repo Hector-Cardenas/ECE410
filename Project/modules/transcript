@@ -1,0 +1,60 @@
+# vsim -c Conv1D_Control_FSM_tb_port_level -voptargs="+acc" 
+# Start time: 20:41:42 on Jun 04,2025
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vopt-143) Recognized 1 FSM in module "Conv1D_Control_FSM(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# //  Questa Sim-64
+# //  Version 2024.2 linux_x86_64 May 20 2024
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.Conv1D_Control_FSM_tb_port_level(fast)
+# Loading work.Conv1D_Control_FSM(fast)
+# ** Warning: (vsim-3015) [PCDPC] - Port size (13) does not match connection size (6) for port 'num_cycles_to_process_inputs'. The port definition is at: FSM.sv(16).
+#    Time: 0 ps  Iteration: 0  Instance: /Conv1D_Control_FSM_tb_port_level/dut File: ./unitTests/FSM_tb.sv Line: 45
+# Starting Conv1D_Control_FSM Testbench (Strict Port-Level Verification)...
+# [25000] Reset released.
+# [30000] Test Case 1: Basic operation (FIFOs ready)...
+# ** Error: TC1 Failed: Input FIFO rd_en(s) not high when expected. TB_cycle 9, FSM_inputs_driven_count 9. act_rd 0, w_rd 0
+#    Time: 160 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 135
+# ** Error: TC1 Failed: Input FIFO rd_en(s) not high when expected. TB_cycle 10, FSM_inputs_driven_count 9. act_rd 0, w_rd 0
+#    Time: 170 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 135
+# ** Error: TC1 Failed: Input FIFO rd_en(s) not high when expected. TB_cycle 11, FSM_inputs_driven_count 9. act_rd 0, w_rd 0
+#    Time: 180 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 135
+# ** Error: TC1 Failed: Input FIFO rd_en(s) not high when expected. TB_cycle 12, FSM_inputs_driven_count 9. act_rd 0, w_rd 0
+#    Time: 190 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 135
+# ** Error: TC1 Failed: Input FIFO rd_en(s) not high when expected. TB_cycle 13, FSM_inputs_driven_count 9. act_rd 0, w_rd 0
+#    Time: 200 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 135
+# ** Error: TC1 Failed: Input FIFO rd_en(s) not high when expected. TB_cycle 14, FSM_inputs_driven_count 9. act_rd 0, w_rd 0
+#    Time: 210 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 135
+# [220000] TC1: conv_op_done seen at testbench cycle 15.
+# ** Error: TC1 Failed: conv_op_done not high at end of operation. InputsDriven: 9, OutputsWritten: 10
+#    Time: 230 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 174
+# ** Error: TC1 Failed: Incorrect total inputs driven by FSM. Expected 10, Got 9
+#    Time: 230 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 175
+# ** Error: TC1 Failed: conv_op_done pulse verification failed (expected high). Value: 0
+#    Time: 240 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 180
+# [250000] Test Case 2: Input FIFO (act) becomes empty...
+# [275000] Reset released.
+# ** Error: TC2.3 Error: Did not finish. conv_op_done: 0
+#    Time: 430 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 214
+# [430000] Test Case 3: Output FIFO becomes full...
+# [455000] Reset released.
+# ** Error: TC3.3 Error: Did not finish. conv_op_done: 0
+#    Time: 650 ns  Scope: Conv1D_Control_FSM_tb_port_level File: ./unitTests/FSM_tb.sv Line: 236
+# [650000] All FSM test cases completed.
+# ** Note: $finish    : ./unitTests/FSM_tb.sv(239)
+#    Time: 650 ns  Iteration: 1  Instance: /Conv1D_Control_FSM_tb_port_level
+# End time: 20:41:47 on Jun 04,2025, Elapsed time: 0:00:05
+# Errors: 11, Warnings: 2
