@@ -11,14 +11,14 @@ input Act_Valids_In [ARRAY_COLUMNS-1:0];
 input logic signed Weights_In [ARRAY_ROWS-1:0] [ARRAY_INPUTS_N-1:0];
 input Weight_Valids_In [ARRAY_ROWS-1:0];
 input Clear_Row [ARRAY_ROWS-1:0];
-input Clear_Collumn [ARRAY_COLUMNS-1:0];
-input Clock;
+input Clear_Col [ARRAY_COLUMNS-1:0];
+input Clock, Reset;
 
 output logic Acts_Out [ARRAY_COLUMNS-1:0] [ARRAY_INPUTS_N-1:0];
 output Act_Valids_Out [ARRAY_COLUMNS-1:0];
 output logic Weights_Out [ARRAY_ROWS-1:0] [ARRAY_INPUTS_N-1:0];
 output Weight_Valids_Out [ARRAY_ROWS-1:0];
-output logic Accs_Out [ARRAY_ROWS-1:0] [ARRAY_COLLUMS-1:0] [ARRAY_OUTPUTS_N-1:0];
+output logic Accs_Out [ARRAY_ROWS-1:0] [ARRAY_COLUMNS-1:0] [ARRAY_OUTPUTS_N-1:0];
 
 wire Act_Wires [ARRAY_ROWS:0] [ARRAY_COLUMNS-1:0] [ARRAY_INPUTS_N:0];
 wire Weight_Wires [ARRAY_ROWS-1:0] [ARRAY_COLUMNS:0] [ARRAY_INPUTS_N:0];
@@ -26,21 +26,21 @@ wire Weight_Wires [ARRAY_ROWS-1:0] [ARRAY_COLUMNS:0] [ARRAY_INPUTS_N:0];
 genvar row, column;
 
 generate
-    for (column=0; column < ARRAY_COLUMNS; collumn++)
-        assign Act_wires[0][column] = {Act_Valids_In, Acts_In[column]};
+    for (column=0; column < ARRAY_COLUMNS; column++)
+        assign Act_Wires[0][column] = {Act_Valids_In, Acts_In[column]};
 
     for (row=0; row < ARRAY_ROWS; row++)
         assign Weight_Wires[row][0] = {Weight_Valids_In, Weights_In[row]};
 
     for (row=0; row < ARRAY_ROWS; row++)
-        for (column=0; column < ARRAY_COLUMNS; collumn++) begin: systolic
+        for (column=0; column < ARRAY_COLUMNS; column++) begin: systolic
             SystolicNode #(
                 .INPUTS_N(ARRAY_INPUTS_N), 
                 .ACCUM_OUT_N(ARRAY_OUTPUTS_N)
             ) node(
                 .Clock(Clock),
                 .Reset(Reset),
-                .Clear(Clear_Row[row]&&Clear_Collumn[column]),
+                .Clear(Clear_Row[row]&&Clear_Col[column]),
                 .Act_Valid_In(Act_Wires[row][column][ARRAY_INPUTS_N]),
                 .Act_In(Act_Wires[row][column][ARRAY_INPUTS_N-1:0]),
                 .Weight_Valids_In(Weight_Wires[row][column][ARRAY_INPUTS_N]),
@@ -53,7 +53,7 @@ generate
             );
             end
  
-    for (column=0; column < ARRAY_COLUMS; column++)
+    for (column=0; column < ARRAY_COLUMNS; column++)
         assign {Act_Valids_Out[column], Acts_Out[column]} = Act_Wires[ARRAY_ROWS][column];
 
     for (row=0; row < ARRAY_ROWS; row++)

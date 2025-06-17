@@ -89,7 +89,7 @@ module SystolicNode #(
     );
 
     // Synchronous logic for registering inputs, calculating product, and passing data
-    always_FF @(posedge Clock) begin
+    always_ff @(posedge Clock) begin
         if (Reset) begin
             // Reset all registered outputs and internal product to '0'
             Act_Out          <= '0;
