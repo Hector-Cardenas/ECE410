@@ -64,3 +64,10 @@ Additionally, the dilation calculations were an ambitious attempt to have the fi
 This project was an ambitious attempt to accelerate the ParallelWaveGAN algorithm for a real-time Eurorack synthesizer module. While initial profiling and design successfully identified a systolic array to solve the core MAC bottleneck, the implementation journey was stalled by the unexpected complexity of verifying the control FSM. This central challenge ultimately forced a strategic rescoping of the project's goals.
 
 We have successfully developed and verified the core computational hardware, establishing a solid foundation for the accelerator; however, the final verification of the simplified FSM and the integration of the PCIe interface remain as the primary obstacles. Though the original vision is not yet complete, this work represents a crucial first step, and the lessons learned have provided an invaluable roadmap for the future completion of this novel synthesis tool.
+___
+## References ##
+[1] A. van den Oord, S. Dieleman, H. Zen, K. Simonyan, O. Vinyals, A. Graves, N. Kalchbrenner, A. Senior, and K. Kavukcuoglu, "WaveNet: A Generative Model for Raw Audio," arXiv preprint arXiv:1609.03499, 2016. [Online]. Available: https://arxiv.org/abs/1609.03499.
+
+[2] A. Nag, J. Casebeer, K. Gandhi, S. Sapra, J. Gardner, D. Parikh, and G. Singh, "AudioGen: Textually Guided Audio Generation," arXiv preprint arXiv:2209.15352, 2022. [Online]. Available: https://arxiv.org/abs/2209.15352.
+
+[3] R. Yamamoto, E. Song, and J.-M. Kim, "Parallel WaveGAN: A fast waveform generation model based on generative adversarial networks with a multi-resolution spectrogram," in 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), Barcelona, Spain, 2020, pp. 6174-6178.
