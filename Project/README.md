@@ -34,22 +34,24 @@ The software/hardware boundary did end up changing through the eventual rescopin
 
 ## Implementation Journey ##
 Our journey through this project was rife with complications, primarily related to the complexity of the algorithm and the difficulty encountered in verify the intricate timing that the control path requires. Though we did find inital success in the foundational modules, our troubles with verification and control complexity led to a need to re-evaluate our scope and attempt to push some of the complexities to the more capable software processing. Though this ultimately proved unfruitful, we produced parameterized and verified modules for the main processing elements with unit tests for each, with the major obstacle continuing to be the FSM; specifically the difficulty in verifying this module.
-
 ### Main Modules ###
 #### Systolic Node ####
 Our systolic array was designed bottom-up with a single SystemVerilog systollic node (PE), featuring a built in saturating accumulator that stores our calculated MAC value, along with the input-output pipeline for activations, weights, and valid bits to ensure that the data is properly being propagated through the network. This module was unit-tested with a focus on timing, value correctness, and appropriate response to valid bits before moving on to the full array.
-
 #### Systolic Array ####
 The systolic array, as implied in its name, is simply an array made up of our systolic nodes with packed input/output vectors and control signals that feed to every node in the array. As the individual nodes had been verified already, the unit test for this module was focused on ensuring that our results were accurate for a reduced matrix-matrix multiplication. 
-
 #### FIFO ####
 In order to ensure that our data stream is consistent and well timed, we need to buffer the inputs from the PCIe module into a module that can stream a single input value on every clock cycle; this ensures that we're leveraging the full bandwidth capabilities of PCIe while balancing our need for sequential inputs. To accomplish this, a basic FIFO module was developed and verified with the goal of eventually connecting it to our PCIe module or possibly general memory module controlled by the FSM.
-
 #### PCIe Port ####
 *Work in progress*. Due to the high bandwidth requirements for real-time performance, we opted to use PCIe rather than SPI for our SW/HW interface. Unfortunately, troubles with the FSM early on led to this module being pushed back for the time being. 
-
 #### Control FSM ####
 This module is the brain of our generator network. Originally, this FSM was responsible for maintining the required timing between all of our modules, as well as a limited amount of data pre-processing (input dilation), and finally some tiling if a layer's calculations was too large for our array. While the module was designed and developed, verifying correct functionality proved to be somewhat beyond my current capabilities as an undergraduate ECE student given the timeline for the project. As such, a change in our SW/HW boundary and rescoping of the project goal was necessary. 
 
-### Re-evaluating Scope and HW/SW Boundary ###
+### Re-evaluating Scope ###
+Faced with a seemingly impossible task for my current skills, even with LLM collaboration, we were forced to re-evaluate the project goal with the aim of reducing the scope and simplifying the control path.
+#### Achievable Goal ####
+Though our initial plan was to deploy this module on an FPGA with space constraints; we had to admit that there was an element of tunnel-vision in pursuing this goal. By instead assuming a custom chiplet, we give ourselves the freedom to have as large an array as we need for our largest layer (128x64). This significantly reduces the burden of our FSM by removing the need to perform any tiling.
+#### HW/SW Boundary #### 
+Additionally, the dilation calculations were an ambitious attempt to have the final be entirely self-contained. As with the previous goal, this was likely an unecessary constraint since our goal for this project was primarily to optimize for a machine learning workload; a goal that could be accomplished with incremental iteration by starting with a more limited HW boundary before looking to expand it in future iterations. This further reduces the load on our FSM, as it no longer has to perform the complicated per-layer dilation calculations before feeding the data into our systolic array. 
+
+#### FSM Redux. ####
 
