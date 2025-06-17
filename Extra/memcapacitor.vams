@@ -1,0 +1,83 @@
+// Memcapacitor Verilog-AMS Model
+//
+// This model describes a charge-controlled memcapacitor where the capacitance
+// C(q) is a function of the charge q that has flowed through the device.
+//
+// Equations:
+//   I(p,n) = ddt(q)
+//   V(p,n) = q / C_mem(q)
+//   C_mem(q) = c_min + (c_max - c_min) * (tanh(k_mc * q) + 1) / 2
+//
+// Terminals:
+//   p: positive terminal
+//   n: negative terminal
+//
+// Parameters:
+//   c_min: Minimum capacitance (Farads). Default: 1pF. Must be > 0.
+//   c_max: Maximum capacitance (Farads). Default: 10pF. Must be >= c_min.
+//   k_mc: Charge sensitivity factor (1/Coulomb). Determines how sharply
+//         capacitance transitions with charge. Positive k_mc means C increases
+//         with q; negative k_mc means C decreases with q. Default: 1e12 (1/pC).
+//   q_init: Initial charge on the memcapacitor (Coulombs). Default: 0 C.
+
+`include "disciplines.vams" // Defines electrical discipline, V(), I(), ddt() etc.
+`include "constants.vams"   // Defines mathematical constants like `P_PI`, not strictly needed here but good practice.
+
+module memcapacitor (p, n);
+    inout p, n;         // Declare p and n as inout ports
+    electrical p, n;    // Assign electrical discipline to ports p and n
+
+    // Define model parameters with default values and valid ranges
+    parameter real c_min  = 1.0e-12 from (1.0e-18:inf); // Minimum capacitance, e.g., 1pF. Must be positive.
+    parameter real c_max  = 10.0e-12 from (1.0e-18:inf); // Maximum capacitance, e.g., 10pF.
+    parameter real k_mc   = 1.0e12 from (-inf:inf);     // Charge sensitivity factor (units: 1/Coulomb)
+                                                        // Controls how fast C changes with q.
+                                                        // If k_mc = 0, C_mem = (c_min + c_max)/2 (linear capacitor)
+    parameter real q_init = 0.0 from (-inf:inf);        // Initial charge (Coulombs)
+
+    // Internal variable for the state of the memcapacitor
+    real q;             // Charge stored in the memcapacitor (Coulombs)
+
+    // Internal variable for the instantaneous capacitance (optional, can be inlined in V==q/C)
+    real c_mem;         // Instantaneous capacitance (Farads)
+
+    analog begin
+
+        // Set initial conditions and perform parameter checks at the start of simulation
+        @(initial_step) begin
+            q = q_init; // Initialize the charge
+
+            // Warning if c_max is less than c_min
+            if (c_max < c_min) begin
+                $warning("Memcapacitor Model Warning (%m): c_max (%g F) is less than c_min (%g F). Capacitance will be bounded by [c_max, c_min].", c_max, c_min);
+            end
+            // Note: The `from (1.0e-18:inf)` constraint on c_min should ensure it's positive.
+            // If not, an additional check for `c_min <= 0` could be added here.
+        end
+
+        // Calculate the instantaneous memcapacitance C_mem(q)
+        // The hyperbolic tangent function tanh(x) ranges from -1 to +1.
+        // (tanh(x) + 1) / 2 maps this to a 0 to 1 range.
+        // So, c_mem smoothly transitions between c_min and c_max.
+        c_mem = c_min + (c_max - c_min) * (tanh(k_mc * q) + 1.0) / 2.0;
+
+        // --- Core Memcapacitor Equations ---
+
+        // 1. Current-charge relationship: I = dq/dt
+        // The current through the device is the rate of change of charge q.
+        I(p,n) <+ ddt(q);
+
+        // 2. Voltage-charge-capacitance relationship: V = q / C_mem(q)
+        // The voltage across the device is the stored charge divided by its current capacitance.
+        // This form is generally robust. If q=0, V=0 (assuming c_mem is not zero).
+        // c_mem is guaranteed to be >= c_min, and c_min > 0.
+        V(p,n) == q / c_mem;
+
+        // --- Optional: Add a small parallel leakage resistance for convergence if needed ---
+        // I(p,n) <+ V(p,n) / 1.0e12; // Example: 1 Tohm leakage resistance
+        // For an ideal memcapacitor, this is omitted.
+
+    end
+
+endmodule
+

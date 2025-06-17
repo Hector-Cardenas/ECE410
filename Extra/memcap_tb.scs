@@ -1,0 +1,55 @@
+* Spectre Testbench for Memcapacitor (memcap_tb.scs)
+* This netlist applies a sinusoidal voltage to the memcapacitor and
+* observes its behavior over time.
+
+* Simulator options:
+* It's good practice to set the simulator. Default is spectre.
+simulator lang=spectre
+
+* Global nodes (optional, but good practice for ground)
+global 0 * Defines node 0 as global ground
+
+* Include the Verilog-AMS model file
+* This statement tells Spectre where to find your Verilog-AMS code.
+* Ensure 'memcapacitor.vams' is in the same directory as this netlist,
+* or provide the full/relative path to the .vams file.
+ahdl_include "memcapacitor.vams"
+
+* --- Stimulus ---
+* Sinusoidal voltage source: V1 (positive_node negative_node) parameters
+* type=sine : specifies a sine wave
+* dc=0      : DC offset voltage (0V)
+* ampl=1    : Amplitude of the sine wave (1V peak)
+* freq=1k   : Frequency of the sine wave (1kHz)
+* delay=0   : Time delay before the sine wave starts (0s)
+V1 (vin 0) vsource type=sine dc=0 ampl=1 freq=1k delay=0
+
+* --- Device Under Test (DUT) ---
+* Instantiate the memcapacitor module from your Verilog-AMS file.
+* Syntax: X<instance_name> (<node_p> <node_n>) <module_name_from_vams> [param1=value1 param2=value2 ...]
+* We are using the default parameters defined in your memcapacitor.vams file here,
+* but you can override them, e.g., c_min=2p c_max=20p
+Xmemcap (vin 0) memcapacitor * Parameters c_min=1p c_max=10p k_mc=1e12 q_init=0 - using defaults for DUT
+
+* --- Analysis ---
+* Transient analysis: tran <options> stop=<stop_time>
+* stop=3m : Simulate for 3 milliseconds (which is 3 periods of a 1kHz signal)
+tran1 tran stop=3m
+
+* --- Save Options ---
+* Control what data Spectre saves.
+* save=allpub : Saves all "public" signals, including those from Verilog-A/AMS modules.
+* This should make internal variables like 'q' and 'c_mem' available if they are
+* declared within the analog block of the Verilog-AMS module.
+saveOptions options save=allpub
+
+* Explicitly save specific signals for clarity or if allpub is too much.
+* V(vin) : Voltage at node 'vin'
+* I(V1)  : Current flowing out of the positive terminal of voltage source V1.
+* This is effectively the current flowing into the memcapacitor.
+* Xmemcap:q : The internal 'q' (charge) variable of the Xmemcap instance.
+* Xmemcap:c_mem : The internal 'c_mem' (instantaneous capacitance) of the Xmemcap instance.
+save V(vin) I(V1) Xmemcap:q Xmemcap:c_mem
+
+* End of netlist
+

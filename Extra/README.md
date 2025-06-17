@@ -1,0 +1,4 @@
+# Extra #
+This directory contains a course related attempt to implement a memcapacitor using Verilog-AMS and testing the implementation using the SPECTRE suite on PSU school servers. Full conversation can be found [here](https://g.co/gemini/share/669cc4eb6189).
+
+I'm, unfortunately, not proficient enough in Verilog-AMS to confirm whether the model we arrived at is correct or functional. Due to the persistent issues with LLM testbenches I've been noticing all term, this extra exploration was abandoned. That being said, it was still a fun experiment in using an LLM to produce code in a language I'm unfamiliar with; my lack of background made this task unachievable for me at the moment, but I can definitely see it being useful to have Gemini write or refactor code for a task I better understand and in a language closer to ones I do know (e.g. Rust vs C++).
